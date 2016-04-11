@@ -1,8 +1,56 @@
 <html>
 	<head>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<style>
+			h1{
+				background-color:black;
+				color:white;
+				border: solid white 10px;	
+				text-align:center;
+			}
+		.center{
+			width: 500px;
+			margin-right:auto;	
+			margin-left:auto;	
+		}
+		</style>
+    <script>
+      $.getJSON("http://cooper-union-instagram-proxy.herokuapp.com/search/tag/programming", function(response){
+        console.log(response);
+        for(var i=0; i<response.length; i++) {
+					$("body").append("<div class='center'><img width=100 height=100 src="+response[i].images.thumbnail.url+" /></div>");
+        }
+				$("img").mouseover(
+				function() {
+					console.log("over");
+					$(this).animate({
+						width: "300",
+						height: "300"	
+					},100);
+				});
+				$('img').mouseout(
+				function() {
+					console.log("out");
+					$(this).animate({
+						width: "100",
+						height: "100"	
+					},100);
+				});
+				
+				currImg = 0;
+				setInterval(function() {
+					$("body").css("background-image","url(" + response[currImg].images.thumbnail.url + ")");
+					currImg++;
+					if (currImg >= response.length) currImg = 0;
+				}, 1000);
+
+      });
+			$(function() {
+			
+			});
+    </script>
 	</head>
 	<body>
-		Instagram
-		yo
+		<h1>#PROGRAMMING</h1>
 	</body>
 </html>
