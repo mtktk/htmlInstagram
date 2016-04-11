@@ -1,6 +1,8 @@
 <html>
 	<head>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.3.5/tabletop.min.js"></script>
+		<script src="http://cdn.rawgit.com/CooperUnion/javascript-learning/master/tabletop-simple.js"></script>
 		<style>
 			h1{
 				background-color:black;
@@ -15,39 +17,43 @@
 		}
 		</style>
     <script>
-      $.getJSON("http://cooper-union-instagram-proxy.herokuapp.com/search/tag/programming", function(response){
-        console.log(response);
-        for(var i=0; i<response.length; i++) {
-					$("body").append("<div class='center'><img width=100 height=100 src="+response[i].images.thumbnail.url+" /></div>");
-        }
-				$("img").mouseover(
-				function() {
-					console.log("over");
-					$(this).animate({
-						width: "300",
-						height: "300"	
-					},100);
-				});
-				$('img').mouseout(
-				function() {
-					console.log("out");
-					$(this).animate({
-						width: "100",
-						height: "100"	
-					},100);
-				});
-				
-				currImg = 0;
-				setInterval(function() {
-					$("body").css("background-image","url(" + response[currImg].images.thumbnail.url + ")");
-					currImg++;
-					if (currImg >= response.length) currImg = 0;
-				}, 1000);
+				var hashtag = "";
+				$(document).ready(function(){
+					var public_spreadsheet_url = 'http://docs.google.com/spreadsheets/d/11NJOYZaKa9ql7mVJf6IawhDuWZY30F43JEJnlpGzZY4/pubhtml';
+					getSpreadsheetJSON(public_spreadsheet_url, function(response1){
+							hashtag = response1[0].hashtag;	
+							console.log(hashtag);
+							$("h1").text("#" + hashtag);
+			      $.getJSON("http://cooper-union-instagram-proxy.herokuapp.com/search/tag/" + hashtag, function(response){
+					        for(var i=0; i<response.length; i++) {
+										$("body").append("<div class='center'><img width=100 height=100 src="+response[i].images.thumbnail.url+" /></div>");
+					        }
+							$("img").mouseover(
+							function() {
+								$(this).animate({
+									width: "300",
+									height: "300"	
+								},100);
+							});
+							$('img').mouseout(
+							function() {
+								$(this).animate({
+									width: "100",
+									height: "100"	
+								},100);
+							});
+														currImg = 0;
+							setInterval(function() {
+								$("body").css("background-image","url(" + response[currImg].images.thumbnail.url + ")");
+								currImg++;
+								if (currImg >= response.length) currImg = 0;
+							}, 1000);
+								});
+							});
+							
 
-      });
-			$(function() {
-			
-			});
+
+			      });
     </script>
 	</head>
 	<body>
